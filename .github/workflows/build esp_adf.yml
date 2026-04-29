@@ -46,6 +46,7 @@ jobs:
       # 1.3 克隆指定版本 ESP-IDF
       - name: 克隆 ESP-IDF
         run: |
+          rm -rf ${{ env.ESP_IDF_DIR }}
           git clone --depth=1 --branch=${{ env.ESP_IDF_VERSION }} \
             https://github.com/espressif/esp-idf.git ${{ env.ESP_IDF_DIR }}
           cd ${{ env.ESP_IDF_DIR }}
