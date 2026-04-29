@@ -18,6 +18,7 @@ env:
   ADF_BOARDS_DIR: ${{ github.workspace }}/micropython_adf/boards
   ADF_MOD_DIR: ${{ github.workspace }}/micropython_adf/mod
   ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
+  ADF_PATH: ${{ github.workspace }}
 
 jobs:
   build-adf-boards:
