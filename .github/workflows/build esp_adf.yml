@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------
 # 工作流名称：手动触发，为 ADF 音频板编译 MicroPython 固件（单 Job 版）
 # ------------------------------------------------------------------
-name: ESP32 ADF MicroPython Build (Single Job)
+name: ESP32 ADF MicroPython Build
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ESP_IDF_VERSION: v5.1.2
+  ESP_IDF_VERSION: v5.2.0
   MICROPYTHON_COMMIT: 5114f2c1ea7c05fc7ab920299967595cfc5307de
   ESP_IDF_DIR: ${{ github.workspace }}/esp-idf
   MICROPYTHON_DIR: ${{ github.workspace }}/micropython
@@ -81,7 +81,7 @@ jobs:
 
           # IDF 补丁
           cd ${{ env.ESP_IDF_DIR }}
-          git apply $GITHUB_WORKSPACE/idf_patches/idf_v5.1_freertos.patch
+          git apply $GITHUB_WORKSPACE/idf_patches/idf_v5.2_freertos.patch
 
       # 7. 构建当前板子固件
       - name: 编译 ${{ matrix.board_dir }} 固件
