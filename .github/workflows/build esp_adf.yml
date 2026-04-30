@@ -90,12 +90,25 @@ jobs:
           source ${{ env.ESP_IDF_DIR }}/export.sh
 
           cd ${{ env.MICROPYTHON_DIR }}/ports/esp32
-          # 执行 make 命令
-          make BOARD=${{ matrix.board }} \
-               BOARD_VARIANT=${{ matrix.variant }} \
-               FLASH_SIZE=${{ matrix.flash_size }}MB \
-               USER_C_MODULES="${{ github.workspace }}/user_modules.cmake" \
-               -j$(nproc)
+          idf.py build \
+            -D MICROPY_BOARD_DIR="${{ env.ADF_BOARDS_DIR }}/${{ matrix.board_dir }}" \
+            -D USER_C_MODULES="${{ env.ADF_MOD_DIR }}/micropython.cmake"
+
+      # 7.5. 合成完整的 firmware.bin
+      - name: 合成 ${{ matrix.board_dir }} 完整固件
+        run: |
+          source ${{ env.ESP_IDF_DIR }}/export.sh
+
+          BUILD_DIR="${{ env.MICROPYTHON_DIR }}/ports/esp32/build"
+          FW_OUTPUT="${{ env.MICROPYTHON_DIR }}/ports/esp32/build/firmware.bin"
+
+          esptool.py --chip esp32 merge_bin -o "$FW_OUTPUT" \
+            --flash_mode dio --flash_freq 40m --flash_size 8MB \
+            0x0 "$BUILD_DIR/bootloader/bootloader.bin" \
+            0x8000 "$BUILD_DIR/partition_table/partition-table.bin" \
+            0x10000 "$BUILD_DIR/micropython.bin"
+
+          echo "✅ 完整固件已合成: $FW_OUTPUT"
 
       # 8. 收集并上传固件
       - name: 收集并上传固件
