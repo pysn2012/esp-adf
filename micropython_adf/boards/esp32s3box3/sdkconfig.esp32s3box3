@@ -1,0 +1,4 @@
+#
+# Audio HAL
+#
+CONFIG_ESP32_S3_BOX_3_BOARD=y

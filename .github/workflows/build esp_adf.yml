@@ -29,6 +29,7 @@ jobs:
         board_dir:
           - lyrat43
           - korvo2v3
+          - esp32s3box3
 
     steps:
       # 1. 检出当前仓库（包含 micropython_adf/）
